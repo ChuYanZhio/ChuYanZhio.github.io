@@ -18,7 +18,7 @@ export default defineConfig({
   cleanUrls: false,
   lastUpdated: true,
   lang: "zh-CN",
-  rewrites: createRewrites(),
+  rewrites: createRewrites({ srcDir: "docs" }),
   head: [
     [
       "link",
