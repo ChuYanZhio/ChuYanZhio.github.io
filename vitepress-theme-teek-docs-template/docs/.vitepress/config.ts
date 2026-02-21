@@ -1,6 +1,7 @@
 import { defineConfig } from "vitepress";
 import llmstxt from "vitepress-plugin-llms";
 import { teekConfig } from "./teekConfig";
+import { createRewrites } from "vitepress-theme-teek/config";
 
 const description = [
   "欢迎来到 vitepress-theme-teek 使用文档",
@@ -17,6 +18,7 @@ export default defineConfig({
   cleanUrls: false,
   lastUpdated: true,
   lang: "zh-CN",
+  rewrites: createRewrites(),
   head: [
     [
       "link",

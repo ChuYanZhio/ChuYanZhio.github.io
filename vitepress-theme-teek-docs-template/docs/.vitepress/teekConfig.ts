@@ -22,6 +22,7 @@ export const teekConfig = defineTeekConfig({
   vitePlugins: {
     sidebarOption: {
       initItems: false,
+      resolveRule: "rewrites" as const,
     },
   },
 });
