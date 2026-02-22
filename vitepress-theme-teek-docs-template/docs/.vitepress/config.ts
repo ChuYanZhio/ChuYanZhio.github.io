@@ -1,7 +1,10 @@
-import { defineConfig } from "vitepress";
+import { defineConfig, loadEnv } from "vitepress";
 import llmstxt from "vitepress-plugin-llms";
 import { teekConfig } from "./teekConfig";
 import { createRewrites } from "vitepress-theme-teek/config";
+
+// 加载环境变量
+const env = loadEnv("", process.cwd());
 
 const description = [
   "欢迎来到 vitepress-theme-teek 使用文档",
@@ -132,6 +135,10 @@ export default defineConfig({
   },
   vite: {
     plugins: [llmstxt() as any],
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(env.VITE_SUPABASE_URL || ""),
+      "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(env.VITE_SUPABASE_ANON_KEY || ""),
+    },
   },
   // transformHtml: (code, id, context) => {
   //   if (context.page !== "404.md") return code;

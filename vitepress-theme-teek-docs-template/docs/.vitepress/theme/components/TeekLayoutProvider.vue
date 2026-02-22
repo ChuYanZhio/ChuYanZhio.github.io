@@ -2,6 +2,7 @@
 import Teek from "vitepress-theme-teek";
 import ContributeChart from "./ContributeChart.vue";
 import NotFound from "./404.vue";
+import LoginPage from "./LoginPage.vue";
 
 </script>
 
@@ -13,6 +14,11 @@ import NotFound from "./404.vue";
 
     <template #not-found>
       <NotFound />
+    </template>
+
+    <!-- 自定义登录页 -->
+    <template #teek-login-page>
+      <LoginPage />
     </template>
   </Teek.Layout>
 </template>
