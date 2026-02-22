@@ -1,5 +1,4 @@
 {
-  "dependencies": {
-    "@supabase/supabase-js": "^2.97.0"
-  }
+  "name": "vitepress-workspace",
+  "private": true
 }
