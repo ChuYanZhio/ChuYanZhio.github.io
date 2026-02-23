@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: vitepress-theme-teek-docs-template/pnpm-lock.yaml
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
