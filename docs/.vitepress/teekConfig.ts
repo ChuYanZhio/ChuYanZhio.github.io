@@ -5,14 +5,14 @@ export const teekConfig = defineTeekConfig({
   teekHome: false,
   vpHome: true,
   sidebarTrigger: true,
-  author: { name: "Teeker", link: "https://github.com/Kele-Bingtang" },
+  author: { name: "仙途传说", link: "https://github.com/ChuYanZhio" },
   footerInfo: {
     theme: {
       name: `Theme By Teek@${version}`,
     },
     copyright: {
       createYear: 2025,
-      suffix: "Teek",
+      suffix: "仙途传说",
     },
   },
   codeBlock: {
