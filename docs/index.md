@@ -58,9 +58,8 @@ features:
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.15;
+  opacity: 0.39;
   z-index: -1;
-  filter: blur(2px);
 }
 
 /* Hero 区域 - 完全透明背景 */
@@ -121,9 +120,8 @@ features:
 /* 特色卡片增强 */
 .VPFeature {
   position: relative;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -174,9 +172,9 @@ features:
 /* 响应式调整 */
 @media (max-width: 768px) {
   .VPHome::before {
-    opacity: 0.1;
+    opacity: 0.2;
   }
-  
+
   .vp-home-hero-name {
     font-size: 2.5rem !important;
   }

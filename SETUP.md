@@ -1,10 +1,10 @@
-# 新电脑开发环境配置指南
+# 仙途传说 - 开发环境配置指南
 
 本文档指导你如何在新电脑上克隆项目并进行二次开发。
 
 ## 📋 前置要求
 
-- **Node.js** >= 18.0.0（推荐 20.x）
+- **Node.js** >= 18.0.0（推荐 20.x，注意 v24 不兼容 VitePress）
 - **Git**
 - **代码编辑器**（推荐 VS Code）
 
@@ -73,6 +73,44 @@ npm run docs:dev
    https://chuyanzhio.github.io
    ```
 
+### 创建存储桶
+
+项目使用 Supabase Storage 存储用户头像，需要创建 `avatars` 存储桶：
+
+1. Supabase Dashboard → **Storage**
+2. 创建名为 `avatars` 的存储桶
+3. 设置为 **Public bucket**
+4. 配置 RLS 策略允许用户上传自己的头像
+
+或通过 SQL 执行：
+
+```sql
+-- 创建存储桶
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('avatars', 'avatars', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 允许所有人查看头像
+CREATE POLICY "Anyone can view avatars"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'avatars');
+
+-- 允许用户上传自己的头像
+CREATE POLICY "Users can upload own avatar"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+-- 允许用户更新自己的头像
+CREATE POLICY "Users can update own avatar"
+ON storage.objects FOR UPDATE
+USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+-- 允许用户删除自己的头像
+CREATE POLICY "Users can delete own avatar"
+ON storage.objects FOR DELETE
+USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+```
+
 ---
 
 ## 📁 项目结构
@@ -80,18 +118,30 @@ npm run docs:dev
 ```
 docs/
 ├── .vitepress/
-│   ├── config.ts          # VitePress 主配置
-│   ├── teekConfig.ts      # Teek 主题配置
-│   └── lib/
-│       ├── supabase.ts    # Supabase 客户端
-│       ├── useAuth.ts     # 认证状态管理
-│       └── api/           # API 接口
-├── @home/                 # 首页模板集合
-│   ├── game-home.md       # 修仙游戏首页
-│   └── teek-original.md   # 原始 Teek 首页
-├── index.md               # 当前首页
-├── guide/                 # 使用指南
-└── reference/             # 参考文档
+│   ├── config.ts              # VitePress 主配置
+│   ├── teekConfig.ts          # Teek 主题配置
+│   ├── lib/
+│   │   ├── supabase.ts        # Supabase 客户端
+│   │   ├── useAuth.ts         # 认证状态管理
+│   │   └── api/
+│   │       ├── profile.ts     # 用户资料 API
+│   │       └── storage.ts     # 存储上传 API
+│   └── theme/
+│       ├── index.ts           # 主题入口
+│       ├── components/
+│       │   ├── NavUser.vue         # 导航栏用户组件
+│       │   ├── AuthPage.vue        # 登录/注册页面
+│       │   ├── UserSettings.vue    # 用户设置页面
+│       │   └── SupabaseComments.vue # 评论区组件
+│       └── styles/
+├── @home/                     # 首页模板集合
+│   ├── game-home-v2.md        # 修仙游戏首页 v2
+│   └── teek-original.md       # 原始 Teek 首页
+├── index.md                   # 当前首页
+├── guide/                     # 游戏指南
+│   └── intro.md
+└── @pages/
+    └── loginPage.md           # 登录页面配置
 ```
 
 ---
@@ -106,7 +156,7 @@ docs/
 
 | 首页风格 | 源文件 | 说明 |
 |---------|--------|------|
-| 修仙游戏 | `@home/game-home.md` | 仙侠风格，当前使用 |
+| 修仙游戏 | `@home/game-home-v2.md` | 仙侠风格，当前使用 |
 | Teek 主题 | `@home/teek-original.md` | 原始主题首页 |
 
 ### 方法二：使用符号链接（高级）
@@ -115,7 +165,7 @@ docs/
 # 切换到修仙游戏首页
 cd docs
 rm index.md
-ln -s @home/game-home.md index.md
+ln -s @home/game-home-v2.md index.md
 ```
 
 ---
@@ -185,6 +235,7 @@ npm run docs:preview
 2. **本地开发时** - 确保环境变量正确配置
 3. **首次部署** - 需要在 GitHub 仓库设置中配置 Secrets
 4. **域名更换** - 需要更新 Supabase URL Configuration
+5. **Node.js 版本** - 不要使用 v24，推荐使用 v20
 
 ---
 
@@ -209,6 +260,14 @@ npm run docs:preview
 1. 检查 GitHub Secrets 是否配置正确
 2. 检查 Supabase URL Configuration 是否包含生产域名
 3. 查看浏览器控制台是否有错误信息
+
+### Q: 头像上传失败？
+
+确保已创建 `avatars` 存储桶并配置了正确的 RLS 策略。
+
+### Q: 构建时报错 "Cannot read properties of undefined"?
+
+检查 Node.js 版本，v24 不兼容 VitePress，请使用 v20。
 
 ---
 
