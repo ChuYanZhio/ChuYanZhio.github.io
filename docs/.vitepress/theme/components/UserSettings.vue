@@ -282,10 +282,23 @@ const confirmCrop = async () => {
       }
       
       avatarUrlInput.value = result.url
-      message.value = '头像上传成功！点击"保存设置"按钮保存更改'
-      isError.value = false
-      showCropper.value = false
-      originalImage.value = null
+      
+      // 自动保存头像到数据库
+      const saveResult = await updateProfile({
+        avatar_url: result.url,
+      })
+      
+      if (saveResult) {
+        message.value = '头像上传成功！'
+        isError.value = false
+        showCropper.value = false
+        originalImage.value = null
+      } else {
+        message.value = '头像已上传，但保存失败，请点击"保存设置"按钮'
+        isError.value = true
+        showCropper.value = false
+        originalImage.value = null
+      }
     } else {
       // 显示具体错误信息
       message.value = result.error || '头像上传失败，请重试'
