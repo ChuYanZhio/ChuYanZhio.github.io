@@ -38,7 +38,7 @@ export default defineConfig({
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/ChuYanZhio/ChuYanZhio.github.io" },
-    ],
+],
     search: { provider: "local" },
   },
 });
