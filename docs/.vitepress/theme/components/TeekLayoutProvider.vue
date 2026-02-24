@@ -37,9 +37,9 @@ const { frontmatter } = useData();
       <UserSettings v-if="frontmatter.userSettings" />
     </template>
     
-    <!-- 在文档内容后添加评论区 -->
+    <!-- 在文档内容后添加评论区（设置页面除外） -->
     <template #doc-after>
-      <SupabaseComments />
+      <SupabaseComments v-if="!frontmatter.userSettings && frontmatter.comment !== false" />
     </template>
   </Teek.Layout>
 </template>

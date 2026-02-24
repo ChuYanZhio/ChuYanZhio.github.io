@@ -1,5 +1,13 @@
 ---
 userSettings: true
+article: false
+sidebar: false
+articleUpdate: false
+comment: false
+articleShare: false
+breadcrumb: false
+autoTitle: false
+title: false
 ---
 
 <script setup>
