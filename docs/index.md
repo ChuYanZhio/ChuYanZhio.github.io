@@ -68,16 +68,35 @@ features:
   background: transparent !important;
   position: relative;
   padding-bottom: 40px !important;
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+}
+
+.VPHomeHero .container,
+.VPHero .container,
+.VPHomeHero .main,
+.VPHero .main {
+  background: transparent !important;
 }
 
 /* Features 区域 - 完全透明背景 */
 .VPHomeFeatures,
 .VPFeatures {
   background: transparent !important;
+  border-top: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-.VPFeatures .container {
+.VPFeatures .container,
+.VPFeatures .items {
   background: transparent !important;
+}
+
+/* 消除所有可能的分隔线 */
+.VPHomeHero::after,
+.VPFeatures::before {
+  display: none !important;
 }
 
 /* 名称渐变动画 */
