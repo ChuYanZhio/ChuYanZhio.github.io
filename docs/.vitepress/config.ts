@@ -1,6 +1,9 @@
-import { defineConfig } from "vitepress";
+import { defineConfig, loadEnv } from "vitepress";
 import llmstxt from "vitepress-plugin-llms";
 import { teekConfig } from "./teekConfig";
+
+// 加载环境变量
+const env = loadEnv("", process.cwd());
 
 const description = [
   "欢迎来到 vitepress-theme-teek 使用文档",
@@ -11,6 +14,14 @@ const description = [
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   extends: teekConfig,
+  vite: {
+    // 注入环境变量到客户端
+    define: {
+      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(env.VITE_SUPABASE_URL || ""),
+      "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(env.VITE_SUPABASE_ANON_KEY || ""),
+    },
+    plugins: [llmstxt() as any],
+  },
   title: "vitepress-theme-teek",
   description: description,
   cleanUrls: false,
@@ -31,24 +42,13 @@ export default defineConfig({
     ["meta", { property: "og:description", description }],
     ["meta", { name: "description", description }],
     ["meta", { name: "author", content: "Teek" }],
-    // 禁止浏览器缩放
-    // [
-    //   "meta",
-    //   {
-    //     name: "viewport",
-    //     content: "width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
-    //   },
-    // ],
     ["meta", { name: "keywords", description }],
   ],
   markdown: {
-    // 开启行号
     lineNumbers: true,
     image: {
-      // 默认禁用；设置为 true 可为所有图片启用懒加载。
       lazyLoading: true,
     },
-    // 更改容器默认值标题
     container: {
       tipLabel: "提示",
       warningLabel: "警告",
@@ -58,10 +58,9 @@ export default defineConfig({
     },
   },
   sitemap: {
-    hostname: "https://vp.teek.top", // ** 换成你的域名
+    hostname: "https://ChuYanZhi3026.github.io/",
     transformItems: (items) => {
       const permalinkItemBak: typeof items = [];
-      // 使用永久链接生成 sitemap
       const permalinks = (globalThis as any).VITEPRESS_CONFIG.site.themeConfig
         .permalinks;
       items.forEach((item) => {
@@ -73,7 +72,6 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     logo: "/teek-logo-mini.svg",
     darkModeSwitchLabel: "主题",
     sidebarMenuLabel: "菜单",
@@ -101,7 +99,6 @@ export default defineConfig({
         items: [
           { text: "归档页", link: "/archives" },
           { text: "清单页", link: "/articleOverview" },
-          { text: "登录页", link: "/login" },
           {
             text: "风险链接提示页",
             link: "/risk-link?target=https://vp.teek.top",
@@ -110,6 +107,7 @@ export default defineConfig({
           { text: "标签页", link: "/tags" },
         ],
       },
+/*      { text: "登录页", link: "/login" }, */
       { text: "✨ 赞赏", link: "/personal/" },
     ],
     socialLinks: [
@@ -124,14 +122,7 @@ export default defineConfig({
     editLink: {
       text: "在 GitHub 上编辑此页",
       pattern:
-        "https://github.com/Kele-Bingtang/vitepress-theme-teek/edit/master/docs/:path",
+        "https://github.com/ChuYanZhi3026/ChuYanZhio.github.io/edit/main/docs/:path",
     },
   },
-  vite: {
-    plugins: [llmstxt() as any],
-  },
-  // transformHtml: (code, id, context) => {
-  //   if (context.page !== "404.md") return code;
-  //   return code.replace("404 | ", "");
-  // },
 });
